@@ -1,0 +1,57 @@
+   
+    @model BudgetTracker.Models.Transaction
+    
+
+    @{
+    ViewData["Title"] = "Add Transaction";
+    }
+
+    <h2>AddTransaction</h2>
+
+    <form asp-action="AddTransaction">
+        <div class="form-horizontal">
+            <h4>Transaction</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="amount_trans" class="col-md-2 control-label">Amount</label>
+                <div class="col-md-10">
+                    <input asp-for="amount_trans" class="form-control" />
+                    <span asp-validation-for="amount_trans" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="hidden" asp-for="budgetid" class="form-control" asp-items="ViewBag.budgetid" value="@ViewBag.budgetid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="description" class="col-md-2 control-label">Description</label>
+                <div class="col-md-10">
+                    <input asp-for="description" class="form-control" />
+                    <span asp-validation-for="description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+            <label asp-for="created_at" class="col-md-2 control-label">Date</label>
+            <div class="col-md-10">
+                <input asp-for="created_at" class="form-control" />
+                <span asp-validation-for="created_at" class="text-danger"></span>
+            </div>
+        </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

@@ -1,0 +1,78 @@
+@model IEnumerable<BudgetTracker.Models.Budget>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Budget</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    Budget Item
+                </th>
+                <th>
+                    Monthly Amount
+                </th>
+                <th>
+                    Amount Spent
+                </th>
+                <th>
+                    Amount Left
+                </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.amount_budget)
+            </td>
+            <td>
+                @{ decimal spent = 0;}
+                @foreach (var transaction in item.Transactions)
+                {
+                    if (transaction.created_at.Month == DateTime.Now.Month && transaction.created_at.Year == DateTime.Now.Year)
+                    {
+                        spent += transaction.amount_trans;
+                    }
+                }
+                @spent
+            </td>
+            <td>
+                @{decimal amount_left = item.amount_budget;}
+                @foreach (var transaction in item.Transactions)
+                {
+                    if (transaction.created_at.Month == DateTime.Now.Month && transaction.created_at.Year == DateTime.Now.Year)
+                    {
+                        amount_left -= transaction.amount_trans;
+                    }
+                }
+                @{ string negative = "black";}
+                @{ if (amount_left <= 0)
+                    {
+                        negative = "red";
+                    }
+                }
+                <span style = "color:@negative">@amount_left</span>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>    
+            </td>
+            <td>
+                <a asp-action="AddTransaction" asp-route-id="@item.id" class = "btn btn-primary" style = "color:white" role="button">Add Transaction </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
